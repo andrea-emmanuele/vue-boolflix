@@ -7,19 +7,49 @@
 </head>
 <body>
  <section id="root">
-     <header>
+     <header @click="!query ? isSearching = false : isSearching = true">
          <div class="logo">LOGO</div>
          <nav>
-             <div class="inner-nav">links</div>
              <div class="inner-nav">
-                 <button class="search-btn">
-                     <span class="search">
-                         <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 28 28"><g fill="none"><path d="M11.5 2a9.5 9.5 0 0 1 9.5 9.5c0 2.082-.67 4.007-1.805 5.573l6.366 6.366a1.5 1.5 0 0 1-2.008 2.225l-.114-.103l-6.366-6.366A9.458 9.458 0 0 1 11.5 21a9.5 9.5 0 0 1 0-19zm0 3a6.5 6.5 0 1 0 0 13a6.5 6.5 0 0 0 0-13z" fill="currentColor"/></g></svg>
-                     </span>
-                 </button>
+                 <div class="item"><a href="#">Movies</a></div>
+                 <div class="item"><a href="#">TV Series</a></div>
+             </div>
+             <div class="inner-nav">
+                 <div class="search-box" :class="onFocus()" @click.prevent.stop>
+                     <button class="search-btn" @click="search($refs)">
+                         <span class="search">
+                             <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                  aria-hidden="true" focusable="false" width="1em" height="1em"
+                                  style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);"
+                                  preserveAspectRatio="xMidYMid meet" viewBox="0 0 28 28"><g fill="none"><path
+                                     d="M11.5 2a9.5 9.5 0 0 1 9.5 9.5c0 2.082-.67 4.007-1.805 5.573l6.366 6.366a1.5 1.5 0 0 1-2.008 2.225l-.114-.103l-6.366-6.366A9.458 9.458 0 0 1 11.5 21a9.5 9.5 0 0 1 0-19zm0 3a6.5 6.5 0 1 0 0 13a6.5 6.5 0 0 0 0-13z"
+                                     fill="currentColor"/></g></svg>
+                         </span>
+                     </button>
+                     <div class="search-bar">
+                         <input ref="searchbar" v-model="query" type="text" placeholder="Titles" @keyup="getSearchedFilms()">
+                     </div>
+                 </div>
              </div>
          </nav>
      </header>
+     <main @click="!query ? isSearching = false : isSearching = true">
+         <div class="results">
+             <div class="item" v-for="result in queryResults" v-if="result.poster_path !== null">
+                 <div class="preview">
+                     <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                 </div>
+                 <div class="about">
+                    <h2>Title: {{ result.title }}</h2>
+                     <div class="inner-about">
+                        <span>{{ result.original_title}}</span>
+                        <span>{{ result.original_language }}</span>
+                        <span>{{ result.vote_average }}</span>
+                     </div>
+                 </div>
+             </div>
+         </div>
+     </main>
  </section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>

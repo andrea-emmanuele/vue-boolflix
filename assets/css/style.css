@@ -12,6 +12,7 @@ section#root {
     padding: 0 4rem;
 }
 
+/*region header*/
 section#root header {
     height: 60px;
     color: #fff;
@@ -20,11 +21,120 @@ section#root header {
 }
 
 section#root header > div.logo {
+    height: 22px;
     flex: 0 0 10%;
 }
 
 section#root header > nav {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     flex: 0 0 90%;
 }
+
+section#root header nav > .inner-nav {
+    display: flex;
+}
+
+section#root header nav .inner-nav > .item {
+    margin-right: 1rem;
+}
+
+section#root header nav button.search-btn {
+    all: unset;
+    cursor: pointer;
+}
+
+section#root header nav button span > svg {
+    width: 20px;
+    height: auto;
+}
+
+section#root header nav .search-box > .search-bar {
+    display: none;
+}
+
+section#root header nav .search-box.onfocus {
+    position: relative;
+    display: flex;
+}
+
+section#root header nav .search-box.onfocus > button.search-btn {
+    position: absolute;
+    top: 50%;
+    left: .4rem;
+    transform: translateY(-42%);
+    cursor: default;
+}
+
+section#root header nav .search-box.onfocus > .search-bar {
+    display: block;
+}
+
+section#root header nav .search-box.onfocus .search-bar > input[type="text"] {
+    font-size: .95rem;
+    color: #fff;
+    background: #000;
+    width: 300px;
+    padding: .4rem 0 .4rem 2rem;
+    border: 1px solid #fff;
+}
+/*endregion*/
+
+/*region main*/
+main > .results {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+}
+
+main .results > .item {
+    position: relative;
+    border-radius: 1rem;
+    padding: 2rem 0;
+    margin-right: 5px;
+    flex: 0 0 calc(20% - 5px);
+    transition: transform 300ms ease-in-out;
+    overflow: hidden;
+}
+
+main .results > .item:hover {
+    transform: scale(1.3);
+    z-index: 2;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .7);
+}
+
+main .results .item:hover > .preview {
+    transform: scale(1.2);
+}
+
+main .results .item > .about {
+    position: absolute;
+    bottom: 0;
+    color: #fff;
+    width: 100%;
+    height: 30%;
+    background: #181818;
+    z-index: 3;
+    display: none;
+}
+
+main .results > .item:hover > .about {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem .5rem;
+}
+
+
+main .results .item > .preview {
+    height: 500px;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+main .results .item .preview > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+/*endregion*/
