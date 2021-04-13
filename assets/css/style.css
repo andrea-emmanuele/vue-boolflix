@@ -11,16 +11,18 @@ body {
     background: #141414;
 }
 
-section#root {
-    padding: 0 4rem;
-}
-
 /*region header*/
 section#root header {
-    height: 60px;
+    position: fixed;
+    top: 0;
+    background: #141414;
+    width: 100%;
+    height: 75px;
     color: #fff;
+    padding: 0 4rem;
     display: flex;
     align-items: center;
+    z-index: 2;
 }
 
 section#root header > div.logo {
@@ -31,7 +33,7 @@ section#root header > nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    flex: 0 0 90%;
+    flex: 1 0 80%;
     padding-left: 1rem;
 }
 
@@ -41,6 +43,7 @@ section#root header nav > .inner-nav {
 
 section#root header nav .inner-nav > .item {
     margin-right: 1rem;
+    cursor: pointer;
 }
 
 section#root header nav .inner-nav .item > a {
@@ -90,13 +93,31 @@ section#root header nav .search-box.onfocus .search-bar > input[type="text"] {
 /*endregion*/
 
 /*region main*/
-main > .results {
-    display: flex;
-    flex-wrap: wrap;
-    margin-top: 2rem;
+main {
+    padding: 0 4rem;
+    margin-top: 60px;
 }
 
-main .results > .item {
+main > section {
+    margin-top: 3rem;
+}
+
+main section > h1 {
+    font-size: 3rem;
+    color: #fff;
+}
+
+main > .results,
+main section > .inner-movies {
+    display: flex;
+}
+
+main > .results {
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+main .item {
     position: relative;
     border-radius: 1rem;
     padding: 2rem 0;
@@ -107,29 +128,29 @@ main .results > .item {
     cursor: pointer;
 }
 
-main .results > .item:hover {
-    transform: scale(1.3);
+main .item:hover {
+    transform: scale(1.2) translateY(-5rem);
     z-index: 2;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .7);
 }
 
-main .results .item > .preview {
+main .item > .preview {
     height: 500px;
     border-radius: 1rem;
     overflow: hidden;
 }
 
-main .results .item .preview > img {
+main .item .preview > img {
     width: 100%;
     height: 100%;
     object-fit: cover;
 }
 
-main .results .item:hover > .preview {
+main .item:hover > .preview {
     transform: scale(1.2);
 }
 
-main .results .item > .about {
+main .item > .about {
     position: absolute;
     bottom: 0;
     color: #fff;
@@ -141,19 +162,19 @@ main .results .item > .about {
     display: none;
 }
 
-main .results > .item:hover > .about {
+main .item:hover > .about {
     display: flex;
     flex-direction: column;
     padding: 4.3rem .5rem .5rem .5rem;
 }
 
-main .results .item .about > h2 {
+main .item .about > h2 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
-main .results .item .about > p {
+main .item .about > p {
     font-size: .7rem;
     height: 2rem;
     line-height: 1rem;
@@ -161,7 +182,7 @@ main .results .item .about > p {
     text-overflow: ellipsis;
 }
 
-main .results .item .about > .inner-about {
+main .item .about > .inner-about {
     position: absolute;
     bottom: .5rem;
     left: .5rem;
@@ -171,22 +192,22 @@ main .results .item .about > .inner-about {
     align-items: center;
 }
 
-main .results .item .about .inner-about > * {
+main .item .about .inner-about > * {
     margin-right: .6rem;
 }
 
-main .results .item .about .inner-about > .rate {
+main .item .about .inner-about > .rate {
     position: relative;
     height: 16px;
 }
 
-main .results .item .about .inner-about .rate > .inner-rate {
+main .item .about .inner-about .rate > .inner-rate {
     position: absolute;
     top: 0;
     display: flex;
 }
 
-.star {
+main .star {
     background: #777;
     height: 15px;
     width: 15px;
@@ -195,7 +216,7 @@ main .results .item .about .inner-about .rate > .inner-rate {
     display: block;
 }
 
-.star.fill {
+main .star.fill {
     background: #FFA41C;
 }
 /*endregion*/

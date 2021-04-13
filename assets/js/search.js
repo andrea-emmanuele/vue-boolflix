@@ -8,7 +8,14 @@ new Vue({
                onfocus: this.isSearching
            }
        },
-       queryResults: ""
+       queryResults: "",
+       active: "movies",
+       discoverFilms: "",
+       topRatedFilms: "",
+       trendingFilmsToday: "",
+       discoverTV: "",
+       topRatedTV: "",
+       trendingTVToday: ""
    },
     methods: {
         search(refs) {
@@ -64,6 +71,60 @@ new Vue({
             vote = parseInt(Math.round(vote/2));
 
             return vote;
+        },
+        getMovies() {
+            let uri = 'https://api.themoviedb.org/3/discover/movie?api_key=5809053c05dc9a515b67e3ed5d1ef360';
+
+            axios
+                .get(uri)
+                .then(response => {
+                    this.discoverFilms = response.data.results;
+                })
+
+            uri = 'https://api.themoviedb.org/3/movie/top_rated?api_key=5809053c05dc9a515b67e3ed5d1ef360';
+
+            axios
+                .get(uri)
+                .then(response => {
+                    this.topRatedFilms = response.data.results;
+                })
+
+            uri = 'https://api.themoviedb.org/3/trending/movie/day?api_key=5809053c05dc9a515b67e3ed5d1ef360';
+
+            axios
+                .get(uri)
+                .then(response => {
+                    this.trendingFilmsToday = response.data.results;
+                })
+        },
+        getTV() {
+            let uri = 'https://api.themoviedb.org/3/discover/tv?api_key=5809053c05dc9a515b67e3ed5d1ef360';
+
+            axios
+                .get(uri)
+                .then(response => {
+                    this.discoverTV = response.data.results;
+                })
+
+            uri = 'https://api.themoviedb.org/3/tv/top_rated?api_key=5809053c05dc9a515b67e3ed5d1ef360';
+
+            axios
+                .get(uri)
+                .then(response => {
+                    this.topRatedTV = response.data.results;
+                })
+
+            uri = 'https://api.themoviedb.org/3/trending/tv/day?api_key=5809053c05dc9a515b67e3ed5d1ef360';
+
+            axios
+                .get(uri)
+                .then(response => {
+                    this.trendingTVToday = response.data.results;
+                })
         }
+    },
+    created() {
+       this.getMovies();
+       this.getTV();
     }
 });

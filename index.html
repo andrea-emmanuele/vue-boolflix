@@ -10,7 +10,7 @@
      <header @click="!query ? isSearching = false : isSearching = true">
          <div class="logo">
              <a href="#">
-                 <svg width="200" height="50" viewBox="0 0 334 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+                 <svg width="140" height="50" viewBox="0 0 334 92" fill="none" xmlns="http://www.w3.org/2000/svg">
                  <g id="logo" filter="url(#filter0_d)">
                      <path id="B" d="M7.5656 79.3994L5.87751 28.2398L23.6352 25.7623C29.7866 24.9041 34.4917 25.4478 37.7507 27.3934C41.0089 29.3157 42.7138 32.5724 42.8653 37.1637C42.948 39.6701 42.3827 41.9728 41.1693 44.0718C39.9552 46.1473 38.2255 47.7888 35.98 48.9963C38.6015 49.2895 40.6878 50.328 42.2392 52.1118C43.8137 53.8924 44.6485 56.2234 44.7435 59.1046C44.9059 64.0238 43.4735 67.9653 40.4465 70.9292C37.4195 73.893 33.0284 75.7999 27.2732 76.6499L7.5656 79.3994ZM17.2762 55.6652L17.7319 69.474L26.6804 68.2256C29.1409 67.8823 31.0366 67.0295 32.3675 65.6672C33.7209 64.2782 34.3632 62.5413 34.2944 60.4565C34.1398 55.7716 31.6588 53.7292 26.8515 54.3293L17.2762 55.6652ZM17.0304 48.2161L24.7603 47.1376C30.0265 46.3088 32.5911 43.8213 32.4543 39.6751C32.3778 37.3561 31.6498 35.7868 30.2702 34.9674C28.9131 34.1213 26.7953 33.899 23.9169 34.3006L16.6049 35.3208L17.0304 48.2161Z" fill="#E50914"/>
                      <path id="O" d="M93.7317 44.9904C93.8425 50.0283 93.0528 54.5277 91.3627 58.4886C89.6727 62.4495 87.1934 65.6151 83.9249 67.9853C80.6798 70.3533 76.9219 71.7359 72.6513 72.1331C68.4273 72.526 64.636 71.8573 61.2773 70.1269C57.9187 68.3965 55.2877 65.7297 53.3845 62.1265C51.4807 58.4999 50.463 54.2273 50.3314 49.3088L50.2758 46.7781C50.165 41.7403 50.966 37.2281 52.6789 33.2416C54.4147 29.2295 56.9053 26.0511 60.151 23.7065C63.4195 21.3363 67.1773 19.9537 71.4246 19.5586C75.6719 19.1636 79.4635 19.8441 82.7993 21.6C86.158 23.3304 88.7781 26.0334 90.6595 29.7091C92.5638 33.3592 93.5711 37.6914 93.6814 42.7058L93.7317 44.9904ZM83.0391 43.6604C82.921 38.2946 81.8745 34.3064 79.8996 31.696C77.9246 29.0856 75.1636 27.9453 71.6164 28.2753C68.0925 28.603 65.4042 30.2384 63.5514 33.1813C61.6981 36.1008 60.8183 40.2211 60.9119 45.5423L60.9668 48.0378C61.0818 53.2631 62.1277 57.2278 64.1048 59.932C66.0818 62.6361 68.8672 63.8211 72.4611 63.4868C75.9849 63.159 78.6616 61.5248 80.491 58.584C82.32 55.6198 83.1876 51.4771 83.094 46.1559L83.0391 43.6604Z" fill="#E50914"/>
@@ -37,8 +37,8 @@
          </div>
          <nav>
              <div class="inner-nav">
-                 <div class="item"><a href="#">Movies</a></div>
-                 <div class="item"><a href="#">TV Series</a></div>
+                 <div class="item" @click="active = 'movies'"><span>Movies</span></div>
+                 <div class="item" @click="active = 'tv'"><span>TV Series</span></div>
              </div>
              <div class="inner-nav">
                  <div class="search-box" :class="onFocus()" @click.prevent.stop>
@@ -83,6 +83,160 @@
                  </div>
              </div>
          </div>
+         <section id="movies" v-if="query === '' && active === 'movies'">
+             <h1>Discover Films</h1>
+             <div class="inner-movies">
+                 <div class="item" v-for="result in discoverFilms" v-if="result.poster_path !== null">
+                     <div class="preview">
+                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                     </div>
+                     <div class="about">
+                         <h2>{{ getTitle(result) }}</h2>
+                         <p class="overview">{{ result.overview }}</p>
+                         <div class="inner-about">
+                             <span>{{ getType(result.media_type) }}</span>
+                             <img width="22"
+                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                             <div class="rate">
+                                 <div class="inner-rate">
+                                     <span class="star" v-for="star in 5"></span>
+                                 </div>
+                                 <div class="inner-rate">
+                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <h1>Top Rated</h1>
+             <div class="inner-movies">
+                 <div class="item" v-for="result in topRatedFilms" v-if="result.poster_path !== null">
+                     <div class="preview">
+                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                     </div>
+                     <div class="about">
+                         <h2>{{ getTitle(result) }}</h2>
+                         <p class="overview">{{ result.overview }}</p>
+                         <div class="inner-about">
+                             <span>{{ getType(result.media_type) }}</span>
+                             <img width="22"
+                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                             <div class="rate">
+                                 <div class="inner-rate">
+                                     <span class="star" v-for="star in 5"></span>
+                                 </div>
+                                 <div class="inner-rate">
+                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <h1>Trending Today</h1>
+             <div class="inner-movies">
+                 <div class="item" v-for="result in trendingFilmsToday" v-if="result.poster_path !== null">
+                     <div class="preview">
+                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                     </div>
+                     <div class="about">
+                         <h2>{{ getTitle(result) }}</h2>
+                         <p class="overview">{{ result.overview }}</p>
+                         <div class="inner-about">
+                             <span>{{ getType(result.media_type) }}</span>
+                             <img width="22"
+                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                             <div class="rate">
+                                 <div class="inner-rate">
+                                     <span class="star" v-for="star in 5"></span>
+                                 </div>
+                                 <div class="inner-rate">
+                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </section>
+         <section class="tv" v-if="query === '' && active === 'tv'">
+             <h1>Discover TV Series</h1>
+             <div class="inner-movies">
+                 <div class="item" v-for="result in discoverTV" v-if="result.poster_path !== null">
+                     <div class="preview">
+                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                     </div>
+                     <div class="about">
+                         <h2>{{ getTitle(result) }}</h2>
+                         <p class="overview">{{ result.overview }}</p>
+                         <div class="inner-about">
+                             <span>{{ getType(result.media_type) }}</span>
+                             <img width="22"
+                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                             <div class="rate">
+                                 <div class="inner-rate">
+                                     <span class="star" v-for="star in 5"></span>
+                                 </div>
+                                 <div class="inner-rate">
+                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <h1>Top Rated</h1>
+             <div class="inner-movies">
+                 <div class="item" v-for="result in topRatedTV" v-if="result.poster_path !== null">
+                     <div class="preview">
+                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                     </div>
+                     <div class="about">
+                         <h2>{{ getTitle(result) }}</h2>
+                         <p class="overview">{{ result.overview }}</p>
+                         <div class="inner-about">
+                             <span>{{ getType(result.media_type) }}</span>
+                             <img width="22"
+                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                             <div class="rate">
+                                 <div class="inner-rate">
+                                     <span class="star" v-for="star in 5"></span>
+                                 </div>
+                                 <div class="inner-rate">
+                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+             <h1>Trending Today</h1>
+             <div class="inner-movies">
+                 <div class="item" v-for="result in trendingTVToday" v-if="result.poster_path !== null">
+                     <div class="preview">
+                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                     </div>
+                     <div class="about">
+                         <h2>{{ getTitle(result) }}</h2>
+                         <p class="overview">{{ result.overview }}</p>
+                         <div class="inner-about">
+                             <span>{{ getType(result.media_type) }}</span>
+                             <img width="22"
+                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                             <div class="rate">
+                                 <div class="inner-rate">
+                                     <span class="star" v-for="star in 5"></span>
+                                 </div>
+                                 <div class="inner-rate">
+                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </section>
      </main>
  </section>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
