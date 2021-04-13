@@ -40,11 +40,12 @@
                      <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
                  </div>
                  <div class="about">
-                    <h2>Title: {{ result.title }}</h2>
+                    <h2>{{ getTitle(result) }}</h2>
+                    <p class="overview">{{ result.overview }}</p>
                      <div class="inner-about">
-                        <span>{{ result.original_title}}</span>
-                        <span>{{ result.original_language }}</span>
-                        <span>{{ result.vote_average }}</span>
+                         <span>{{ getType(result.media_type) }}</span>
+                         <img width="22" :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                        <span>{{ getRate(result.vote_average) }}</span>
                      </div>
                  </div>
              </div>

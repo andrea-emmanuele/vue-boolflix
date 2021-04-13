@@ -1,7 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Arimo:wght@400;500;600&display=swap');
+
 * {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
+    font-family: 'Arimo', sans-serif;
 }
 
 body {
@@ -96,12 +99,25 @@ main .results > .item {
     flex: 0 0 calc(20% - 5px);
     transition: transform 300ms ease-in-out;
     overflow: hidden;
+    cursor: pointer;
 }
 
 main .results > .item:hover {
     transform: scale(1.3);
     z-index: 2;
     box-shadow: 0 1px 3px rgba(0, 0, 0, .7);
+}
+
+main .results .item > .preview {
+    height: 500px;
+    border-radius: 1rem;
+    overflow: hidden;
+}
+
+main .results .item .preview > img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 main .results .item:hover > .preview {
@@ -114,7 +130,8 @@ main .results .item > .about {
     color: #fff;
     width: 100%;
     height: 30%;
-    background: #181818;
+    background: rgb(24,24,24);
+    background: linear-gradient(360deg, rgba(24,24,24,1) 66%, rgba(0,0,0, 0) 100%);
     z-index: 3;
     display: none;
 }
@@ -122,19 +139,28 @@ main .results .item > .about {
 main .results > .item:hover > .about {
     display: flex;
     flex-direction: column;
-    padding: 1rem .5rem;
+    padding: 4.3rem .5rem .5rem .5rem;
 }
 
-
-main .results .item > .preview {
-    height: 500px;
-    border-radius: 1rem;
+main .results .item .about > p {
+    font-size: .7rem;
+    height: 2rem;
+    line-height: 1rem;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
 
-main .results .item .preview > img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+main .results .item .about > .inner-about {
+    position: absolute;
+    bottom: .5rem;
+    left: .5rem;
+    font-size: .7rem;
+    height: 20px;
+    display: flex;
+    align-items: center;
+}
+
+main .results .item .about .inner-about > * {
+    margin-right: .6rem;
 }
 /*endregion*/
