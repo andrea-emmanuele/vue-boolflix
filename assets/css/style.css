@@ -24,7 +24,6 @@ section#root header {
 }
 
 section#root header > div.logo {
-    height: 22px;
     flex: 0 0 10%;
 }
 
@@ -33,6 +32,7 @@ section#root header > nav {
     justify-content: space-between;
     align-items: center;
     flex: 0 0 90%;
+    padding-left: 1rem;
 }
 
 section#root header nav > .inner-nav {
@@ -41,6 +41,11 @@ section#root header nav > .inner-nav {
 
 section#root header nav .inner-nav > .item {
     margin-right: 1rem;
+}
+
+section#root header nav .inner-nav .item > a {
+    color: #fff;
+    text-decoration: none;
 }
 
 section#root header nav button.search-btn {
@@ -142,6 +147,12 @@ main .results > .item:hover > .about {
     padding: 4.3rem .5rem .5rem .5rem;
 }
 
+main .results .item .about > h2 {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 main .results .item .about > p {
     font-size: .7rem;
     height: 2rem;
@@ -162,5 +173,29 @@ main .results .item .about > .inner-about {
 
 main .results .item .about .inner-about > * {
     margin-right: .6rem;
+}
+
+main .results .item .about .inner-about > .rate {
+    position: relative;
+    height: 16px;
+}
+
+main .results .item .about .inner-about .rate > .inner-rate {
+    position: absolute;
+    top: 0;
+    display: flex;
+}
+
+.star {
+    background: #777;
+    height: 15px;
+    width: 15px;
+    clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+    margin-right: .2rem;
+    display: block;
+}
+
+.star.fill {
+    background: #FFA41C;
 }
 /*endregion*/

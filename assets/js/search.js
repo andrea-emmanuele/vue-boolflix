@@ -61,7 +61,9 @@ new Vue({
            }
        },
         getRate(vote) {
+            vote = parseInt(Math.round(vote/2));
 
+            return vote;
         }
     }
 });
