@@ -9,6 +9,7 @@
 
 body {
     background: #141414;
+    overflow-x: hidden;
 }
 
 /*region header*/
@@ -99,7 +100,7 @@ main {
 }
 
 main > section {
-    margin-top: 3rem;
+    margin-top: 6.5rem;
 }
 
 main section > h1 {
@@ -107,13 +108,11 @@ main section > h1 {
     color: #fff;
 }
 
-main > .results,
-main section > .inner-movies {
+main section > .inner-content {
     display: flex;
 }
 
-main > .results {
-    margin-top: 2rem;
+main #results > .inner-content {
     flex-wrap: wrap;
 }
 

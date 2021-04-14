@@ -60,32 +60,36 @@
          </nav>
      </header>
      <main @click="!query ? isSearching = false : isSearching = true">
-         <div class="results">
-             <div class="item" v-for="result in queryResults" v-if="result.poster_path !== null">
-                 <div class="preview">
-                     <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
-                 </div>
-                 <div class="about">
-                    <h2>{{ getTitle(result) }}</h2>
-                    <p class="overview">{{ result.overview }}</p>
-                     <div class="inner-about">
-                         <span>{{ getType(result.media_type) }}</span>
-                         <img width="22" :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
-                         <div class="rate">
-                             <div class="inner-rate">
-                                 <span class="star" v-for="star in 5"></span>
-                             </div>
-                             <div class="inner-rate">
-                                 <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+         <section id="results" v-if="query">
+             <h1>Results from: {{ query }}</h1>
+             <div class="inner-content">
+                 <div class="item" v-for="result in queryResults" v-if="result.poster_path !== null">
+                     <div class="preview">
+                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                     </div>
+                     <div class="about">
+                         <h2>{{ getTitle(result) }}</h2>
+                         <p class="overview">{{ result.overview }}</p>
+                         <div class="inner-about">
+                             <span>{{ getType(result.media_type) }}</span>
+                             <img width="22"
+                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                             <div class="rate">
+                                 <div class="inner-rate">
+                                     <span class="star" v-for="star in 5"></span>
+                                 </div>
+                                 <div class="inner-rate">
+                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                 </div>
                              </div>
                          </div>
                      </div>
                  </div>
              </div>
-         </div>
+         </section>
          <section id="movies" v-if="query === '' && active === 'movies'">
              <h1>Discover Films</h1>
-             <div class="inner-movies">
+             <div class="inner-content">
                  <div class="item" v-for="result in discoverFilms" v-if="result.poster_path !== null">
                      <div class="preview">
                          <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
@@ -110,7 +114,7 @@
                  </div>
              </div>
              <h1>Top Rated</h1>
-             <div class="inner-movies">
+             <div class="inner-content">
                  <div class="item" v-for="result in topRatedFilms" v-if="result.poster_path !== null">
                      <div class="preview">
                          <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
@@ -135,7 +139,7 @@
                  </div>
              </div>
              <h1>Trending Today</h1>
-             <div class="inner-movies">
+             <div class="inner-content">
                  <div class="item" v-for="result in trendingFilmsToday" v-if="result.poster_path !== null">
                      <div class="preview">
                          <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
@@ -162,7 +166,7 @@
          </section>
          <section class="tv" v-if="query === '' && active === 'tv'">
              <h1>Discover TV Series</h1>
-             <div class="inner-movies">
+             <div class="inner-content">
                  <div class="item" v-for="result in discoverTV" v-if="result.poster_path !== null">
                      <div class="preview">
                          <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
@@ -187,7 +191,7 @@
                  </div>
              </div>
              <h1>Top Rated</h1>
-             <div class="inner-movies">
+             <div class="inner-content">
                  <div class="item" v-for="result in topRatedTV" v-if="result.poster_path !== null">
                      <div class="preview">
                          <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
@@ -212,7 +216,7 @@
                  </div>
              </div>
              <h1>Trending Today</h1>
-             <div class="inner-movies">
+             <div class="inner-content">
                  <div class="item" v-for="result in trendingTVToday" v-if="result.poster_path !== null">
                      <div class="preview">
                          <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
@@ -239,6 +243,7 @@
          </section>
      </main>
  </section>
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.1/axios.min.js" integrity="sha512-bZS47S7sPOxkjU/4Bt0zrhEtWx0y0CRkhEp8IckzK+ltifIIE9EMIMTuT/mEzoIMewUINruDBIR/jJnbguonqQ==" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script src="./assets/js/search.js"></script>
