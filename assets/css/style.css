@@ -110,6 +110,11 @@ main section > h1 {
 
 main section > .inner-content {
     position: relative;
+}
+
+main section .inner-content > .slider {
+    position: relative;
+    left: 0;
     display: flex;
 }
 
@@ -124,7 +129,6 @@ main .inner-content > div[class^="control-"] {
     transition: opacity 500ms linear;
     opacity: 0;
     cursor: pointer;
-    display: flex;
     align-items: center;
     justify-content: center;
 }
@@ -138,12 +142,14 @@ main .inner-content div[class^="control-"] > svg {
     width: 40px;
     height: auto;
     filter: drop-shadow(0 1px 1px #111);
+    pointer-events: none;
 }
 
 main .inner-content > .control-sx {
     top: 0;
     left: -80px;
     background: linear-gradient(90deg, rgba(0, 0, 0, .4) 70%, rgba(0, 0, 0, 0) 100%);
+    display: none;
 }
 
 main .inner-content .control-sx > svg {
@@ -154,6 +160,7 @@ main .inner-content > .control-dx {
     top: 0;
     right: -80px;
     background: linear-gradient(-90deg, rgba(0, 0, 0, .4) 70%, rgba(0, 0, 0, 0) 100%);
+    display: flex;
 }
 
 main .item {

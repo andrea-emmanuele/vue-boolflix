@@ -15,7 +15,10 @@ new Vue({
        trendingFilmsToday: "",
        discoverTV: "",
        topRatedTV: "",
-       trendingTVToday: ""
+       trendingTVToday: "",
+       lastSlider: "",
+       left: 0,
+       step: 0
    },
     methods: {
         search(refs) {
@@ -35,8 +38,6 @@ new Vue({
                    .get(uri)
                    .then(response => {
                        this.queryResults = response.data.results;
-
-                       console.log(this.queryResults);
                    });
            }
            else if (this.query === "") {
@@ -68,7 +69,7 @@ new Vue({
            }
        },
         getRate(vote) {
-            vote = parseInt(Math.round(vote/2));
+            vote = Math.ceil(vote/2);
 
             return vote;
         },
@@ -121,6 +122,71 @@ new Vue({
                 .then(response => {
                     this.trendingTVToday = response.data.results;
                 })
+        },
+        changeView(active) {
+            this.active = active;
+        },
+        scrollBack(id, event) {
+            let ctrlSx = event.target;
+            let ctrlDx = event.target.nextElementSibling;
+            let slider = event.target.parentElement.firstElementChild;
+
+            this.checkSlider(id, slider);
+
+            if (this.step > 0) {
+                this.left += 100;
+                this.step--;
+                slider.style.left = `${this.left}%`;
+            }
+
+            if (this.step < 3)
+                ctrlDx.style.display = "flex";
+
+            if (this.step === 0)
+                ctrlSx.style.display = "none";
+
+            slider.id = `${this.left} ${this.step}`;
+            console.log(slider.id);
+        },
+        scrollForward(id, event) {
+            let ctrlSx = event.target.previousElementSibling;
+            let ctrlDx = event.target;
+            let slider = event.target.parentElement.firstElementChild;
+
+            this.checkSlider(id, slider);
+
+            if (this.step < 3) {
+                this.step++;
+                this.left += -100;
+                slider.style.left = `${this.left}%`;
+            }
+
+            if (this.step === 3)
+                ctrlDx.style.display = "none";
+
+            if (this.step > 0)
+                ctrlSx.style.display = "flex";
+
+            slider.id = `${this.left} ${this.step}`;
+            console.log(slider.id);
+        },
+        checkSlider(id, slider) {
+            if (!this.lastSlider) {
+                this.lastSlider = id;
+            }
+            else if (this.lastSlider !== id) {
+                this.lastSlider = id;
+
+                if (!slider.id) {
+                    this.left = 0;
+                    this.step = 0;
+                }
+                else {
+                    let steps = slider.id.split(" ");
+                    this.left = parseInt(steps[0]);
+                    this.step = parseInt(steps[1]);
+                }
+            }
         }
     },
     created() {

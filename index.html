@@ -37,8 +37,8 @@
          </div>
          <nav>
              <div class="inner-nav">
-                 <div class="item" @click="active = 'movies'"><span>Movies</span></div>
-                 <div class="item" @click="active = 'tv'"><span>TV Series</span></div>
+                 <div class="item" @click="changeView('movies')"><span>Movies</span></div>
+                 <div class="item" @click="changeView('tv')"><span>TV Series</span></div>
              </div>
              <div class="inner-nav">
                  <div class="search-box" :class="onFocus()" @click.prevent.stop>
@@ -90,94 +90,100 @@
          <section id="movies" v-if="query === '' && active === 'movies'">
              <h1>Discover Films</h1>
              <div class="inner-content">
-                 <div class="item" v-for="result in discoverFilms" v-if="result.poster_path !== null">
-                     <div class="preview">
-                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
-                     </div>
-                     <div class="about">
-                         <h2>{{ getTitle(result) }}</h2>
-                         <p class="overview">{{ result.overview }}</p>
-                         <div class="inner-about">
-                             <span>{{ getType(result.media_type) }}</span>
-                             <img width="22"
-                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
-                             <div class="rate">
-                                 <div class="inner-rate">
-                                     <span class="star" v-for="star in 5"></span>
-                                 </div>
-                                 <div class="inner-rate">
-                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                 <div ref="one" class="slider">
+                     <div class="item" v-for="result in discoverFilms" v-if="result.poster_path !== null">
+                         <div class="preview">
+                             <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                         </div>
+                         <div class="about">
+                             <h2>{{ getTitle(result) }}</h2>
+                             <p class="overview">{{ result.overview }}</p>
+                             <div class="inner-about">
+                                 <span>{{ getType(result.media_type) }}</span>
+                                 <img width="22"
+                                      :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                                 <div class="rate">
+                                     <div class="inner-rate">
+                                         <span class="star" v-for="star in 5"></span>
+                                     </div>
+                                     <div class="inner-rate">
+                                         <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                     </div>
                                  </div>
                              </div>
                          </div>
                      </div>
                  </div>
-                 <div ref="ctrl-sx" class="control-sx">
+                 <div class="control-sx" @click="scrollBack(1, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
-                 <div ref="ctrl-dx" class="control-dx">
+                 <div class="control-dx" @click.self="scrollForward(1, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
              </div>
              <h1>Top Rated</h1>
              <div class="inner-content">
-                 <div class="item" v-for="result in topRatedFilms" v-if="result.poster_path !== null">
-                     <div class="preview">
-                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
-                     </div>
-                     <div class="about">
-                         <h2>{{ getTitle(result) }}</h2>
-                         <p class="overview">{{ result.overview }}</p>
-                         <div class="inner-about">
-                             <span>{{ getType(result.media_type) }}</span>
-                             <img width="22"
-                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
-                             <div class="rate">
-                                 <div class="inner-rate">
-                                     <span class="star" v-for="star in 5"></span>
-                                 </div>
-                                 <div class="inner-rate">
-                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                 <div ref="two" class="slider">
+                     <div class="item" v-for="result in topRatedFilms" v-if="result.poster_path !== null">
+                         <div class="preview">
+                             <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                         </div>
+                         <div class="about">
+                             <h2>{{ getTitle(result) }}</h2>
+                             <p class="overview">{{ result.overview }}</p>
+                             <div class="inner-about">
+                                 <span>{{ getType(result.media_type) }}</span>
+                                 <img width="22"
+                                      :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                                 <div class="rate">
+                                     <div class="inner-rate">
+                                         <span class="star" v-for="star in 5"></span>
+                                     </div>
+                                     <div class="inner-rate">
+                                         <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                     </div>
                                  </div>
                              </div>
                          </div>
                      </div>
                  </div>
-                 <div ref="ctrl-sx" class="control-sx">
+                 <div class="control-sx" @click="scrollBack(2, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
-                 <div ref="ctrl-dx" class="control-dx">
+                 <div class="control-dx" @click="scrollForward(2, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
              </div>
              <h1>Trending Today</h1>
              <div class="inner-content">
-                 <div class="item" v-for="result in trendingFilmsToday" v-if="result.poster_path !== null">
-                     <div class="preview">
-                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
-                     </div>
-                     <div class="about">
-                         <h2>{{ getTitle(result) }}</h2>
-                         <p class="overview">{{ result.overview }}</p>
-                         <div class="inner-about">
-                             <span>{{ getType(result.media_type) }}</span>
-                             <img width="22"
-                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
-                             <div class="rate">
-                                 <div class="inner-rate">
-                                     <span class="star" v-for="star in 5"></span>
-                                 </div>
-                                 <div class="inner-rate">
-                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                 <div ref="three" class="slider">
+                     <div class="item" v-for="result in trendingFilmsToday" v-if="result.poster_path !== null">
+                         <div class="preview">
+                             <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                         </div>
+                         <div class="about">
+                             <h2>{{ getTitle(result) }}</h2>
+                             <p class="overview">{{ result.overview }}</p>
+                             <div class="inner-about">
+                                 <span>{{ getType(result.media_type) }}</span>
+                                 <img width="22"
+                                      :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                                 <div class="rate">
+                                     <div class="inner-rate">
+                                         <span class="star" v-for="star in 5"></span>
+                                     </div>
+                                     <div class="inner-rate">
+                                         <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                     </div>
                                  </div>
                              </div>
                          </div>
                      </div>
                  </div>
-                 <div ref="ctrl-sx" class="control-sx">
+                 <div class="control-sx" @click="scrollBack(3, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
-                 <div ref="ctrl-dx" class="control-dx">
+                 <div class="control-dx" @click="scrollForward(3, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
              </div>
@@ -185,94 +191,100 @@
          <section class="tv" v-if="query === '' && active === 'tv'">
              <h1>Discover TV Series</h1>
              <div class="inner-content">
-                 <div class="item" v-for="result in discoverTV" v-if="result.poster_path !== null">
-                     <div class="preview">
-                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
-                     </div>
-                     <div class="about">
-                         <h2>{{ getTitle(result) }}</h2>
-                         <p class="overview">{{ result.overview }}</p>
-                         <div class="inner-about">
-                             <span>{{ getType(result.media_type) }}</span>
-                             <img width="22"
-                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
-                             <div class="rate">
-                                 <div class="inner-rate">
-                                     <span class="star" v-for="star in 5"></span>
-                                 </div>
-                                 <div class="inner-rate">
-                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                 <div ref="one" class="slider">
+                     <div class="item" v-for="result in discoverTV" v-if="result.poster_path !== null">
+                         <div class="preview">
+                             <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                         </div>
+                         <div class="about">
+                             <h2>{{ getTitle(result) }}</h2>
+                             <p class="overview">{{ result.overview }}</p>
+                             <div class="inner-about">
+                                 <span>{{ getType(result.media_type) }}</span>
+                                 <img width="22"
+                                      :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                                 <div class="rate">
+                                     <div class="inner-rate">
+                                         <span class="star" v-for="star in 5"></span>
+                                     </div>
+                                     <div class="inner-rate">
+                                         <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                     </div>
                                  </div>
                              </div>
                          </div>
                      </div>
                  </div>
-                 <div ref="ctrl-sx" class="control-sx">
+                 <div class="control-sx" @click="scrollBack(1, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
-                 <div ref="ctrl-dx" class="control-dx">
+                 <div class="control-dx" @click="scrollForward(1, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
              </div>
              <h1>Top Rated</h1>
              <div class="inner-content">
-                 <div class="item" v-for="result in topRatedTV" v-if="result.poster_path !== null">
-                     <div class="preview">
-                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
-                     </div>
-                     <div class="about">
-                         <h2>{{ getTitle(result) }}</h2>
-                         <p class="overview">{{ result.overview }}</p>
-                         <div class="inner-about">
-                             <span>{{ getType(result.media_type) }}</span>
-                             <img width="22"
-                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
-                             <div class="rate">
-                                 <div class="inner-rate">
-                                     <span class="star" v-for="star in 5"></span>
-                                 </div>
-                                 <div class="inner-rate">
-                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                 <div ref="two" class="slider">
+                     <div class="item" v-for="result in topRatedTV" v-if="result.poster_path !== null">
+                         <div class="preview">
+                             <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                         </div>
+                         <div class="about">
+                             <h2>{{ getTitle(result) }}</h2>
+                             <p class="overview">{{ result.overview }}</p>
+                             <div class="inner-about">
+                                 <span>{{ getType(result.media_type) }}</span>
+                                 <img width="22"
+                                      :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                                 <div class="rate">
+                                     <div class="inner-rate">
+                                         <span class="star" v-for="star in 5"></span>
+                                     </div>
+                                     <div class="inner-rate">
+                                         <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                     </div>
                                  </div>
                              </div>
                          </div>
                      </div>
                  </div>
-                 <div ref="ctrl-sx" class="control-sx">
+                 <div class="control-sx" @click="scrollBack(2, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
-                 <div ref="ctrl-dx" class="control-dx">
+                 <div class="control-dx" @click="scrollForward(2, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
              </div>
              <h1>Trending Today</h1>
              <div class="inner-content">
-                 <div class="item" v-for="result in trendingTVToday" v-if="result.poster_path !== null">
-                     <div class="preview">
-                         <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
-                     </div>
-                     <div class="about">
-                         <h2>{{ getTitle(result) }}</h2>
-                         <p class="overview">{{ result.overview }}</p>
-                         <div class="inner-about">
-                             <span>{{ getType(result.media_type) }}</span>
-                             <img width="22"
-                                  :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
-                             <div class="rate">
-                                 <div class="inner-rate">
-                                     <span class="star" v-for="star in 5"></span>
-                                 </div>
-                                 <div class="inner-rate">
-                                     <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                 <div ref="three" class="slider">
+                     <div class="item" v-for="result in trendingTVToday" v-if="result.poster_path !== null">
+                         <div class="preview">
+                             <img :src="'https://image.tmdb.org/t/p/w342' + result.poster_path">
+                         </div>
+                         <div class="about">
+                             <h2>{{ getTitle(result) }}</h2>
+                             <p class="overview">{{ result.overview }}</p>
+                             <div class="inner-about">
+                                 <span>{{ getType(result.media_type) }}</span>
+                                 <img width="22"
+                                      :src="'https://flagcdn.com/' + getLanguage(result.original_language) + '.svg'">
+                                 <div class="rate">
+                                     <div class="inner-rate">
+                                         <span class="star" v-for="star in 5"></span>
+                                     </div>
+                                     <div class="inner-rate">
+                                         <span class="star fill" v-for="vote in getRate(result.vote_average)"></span>
+                                     </div>
                                  </div>
                              </div>
                          </div>
                      </div>
                  </div>
-                 <div ref="ctrl-sx" class="control-sx">
+                 <div class="control-sx" @click="scrollBack(3, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
-                 <div ref="ctrl-dx" class="control-dx">
+                 <div class="control-dx" @click="scrollForward(3, $event)">
                      <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 256 256"><path d="M96 220a12 12 0 0 1-8.485-20.485L159.029 128L87.515 56.485a12 12 0 0 1 16.97-16.97l80 80a12 12 0 0 1 0 16.97l-80 80A11.963 11.963 0 0 1 96 220z" fill="currentColor"/></svg>
                  </div>
              </div>
