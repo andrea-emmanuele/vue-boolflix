@@ -125,6 +125,26 @@ new Vue({
         },
         changeView(active) {
             this.active = active;
+            this.lastSlider = "";
+            this.left = 0;
+            this.step = 0;
+
+            let sliders = document.querySelectorAll(".slider");
+            let controllersSx = document.querySelectorAll(".control-sx");
+            let controllersDx = document.querySelectorAll(".control-dx");
+
+            sliders.forEach(slider => {
+                slider.style.left = 0;
+                slider.id = "";
+            });
+
+            controllersSx.forEach(controller => {
+                controller.style.display = "none";
+            });
+
+            controllersDx.forEach(controller => {
+                controller.style.display = "flex";
+            });
         },
         scrollBack(id, event) {
             let ctrlSx = event.target;
@@ -168,7 +188,6 @@ new Vue({
                 ctrlSx.style.display = "flex";
 
             slider.id = `${this.left} ${this.step}`;
-            console.log(slider.id);
         },
         checkSlider(id, slider) {
             if (!this.lastSlider) {
